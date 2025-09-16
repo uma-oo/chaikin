@@ -10,26 +10,12 @@ async fn main() {
     let mut lines_to_draw = original_lines.clone();
     let mut pressed_enter_key = false;
     let mut line_is_drawn = false;
-    let mut animation_started = false;
-    let animation_duration = 3.0;
+    // let  animation_started = false;
     loop {
-
-        println!("{:?}", get_time());
         if is_key_pressed(KeyCode::Enter) {
             pressed_enter_key = true;
-            original_lines = draw_lines_points(&points);
-        }
-
-        if animation_started {
-            let first_one = start_animation(lines_to_draw.clone());
-            let second_lines = draw_lines_points(&first_one);
-        }
-
-        if line_is_drawn && pressed_enter_key {
-            // println!("huuuuuuuna");
-            // let first_one = start_animation(lines_to_draw.clone());
-            // let second_lines = draw_lines_points(&first_one);
-            animation_started = true;
+            original_lines = draw_lines_points(points.clone());
+            lines_to_draw = original_lines.clone();
         }
 
         if !pressed_enter_key {
@@ -41,6 +27,11 @@ async fn main() {
                 draw_line(p1.0, p1.1, p2.0, p2.1, 1.0, WHITE);
             }
             line_is_drawn = true;
+        } else {
+            create_animation(7, lines_to_draw.clone());
+            for (p1, p2) in &lines_to_draw {
+                draw_line(p1.0, p1.1, p2.0, p2.1, 1.0, WHITE);
+            }
         }
 
         if is_mouse_button_pressed(MouseButton::Left) {
