@@ -4,6 +4,9 @@ use macroquad::prelude::*;
 #[derive(Clone, Copy, Debug)]
 pub struct Point(pub f32, pub f32);
 
+
+
+//  this is for the combinaison of the points into lines 
 pub fn draw_lines_points(points: Vec<Point>) -> Vec<(Point, Point)> {
     let mut lines = Vec::new();
     for i in 0..points.len() {
@@ -14,36 +17,18 @@ pub fn draw_lines_points(points: Vec<Point>) -> Vec<(Point, Point)> {
     lines
 }
 
-// each times we need the current points
+// each times we need the current points (so we'll be passing the lines each times to get the q and r between each line)
 pub fn chaikin_iteration(points: Vec<(Point, Point)>) -> Vec<Point> {
     let mut lines_iteration = Vec::new();
-
     let (start, _) = points[0];
     lines_iteration.push(start);
-    let mut i = 0;
     for (p1, p2) in &points {
-        if i == 0 {
-            let (start, _) = points[0];
-            lines_iteration.push(start);
-        }
-
-        let point_q = Point(
-            ((3 as f32) / (4 as f32)) * p1.0 + ((1 as f32) / (4 as f32)) * p2.0,
-            ((3 as f32) / (4 as f32)) * p1.1 + ((1 as f32) / (4 as f32)) * p2.1
-        );
-        let point_r = Point(
-            ((1 as f32) / (4 as f32)) * p1.0 + ((3 as f32) / (4 as f32)) * p2.0,
-            ((1 as f32) / (4 as f32)) * p1.1 + ((3 as f32) / (4 as f32)) * p2.1
-        );
+        let point_q = Point(0.75 * p1.0 + 0.25 * p2.0, 0.75 * p1.1 + 0.25 * p2.1);
+        let point_r = Point(0.25 * p1.0 + 0.75 * p2.0, 0.25 * p1.1 + 0.75 * p2.1);
         lines_iteration.push(point_q);
         lines_iteration.push(point_r);
-
-        if i == points.len() - 1 {
-            let (_, end) = points[points.len() - 1];
-            lines_iteration.push(end);
-        }
-        i += 1;
     }
-
+    let (_, end) = points[points.len() - 1];
+    lines_iteration.push(end);
     lines_iteration
 }
