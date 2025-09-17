@@ -5,6 +5,9 @@ use utils::*;
 
 #[macroquad::main("BasicShapes")]
 async fn main() {
+    // setup for the project 
+
+    // points + lines + defaults 
     let mut points = Vec::new();
     let mut lines = Vec::new();
     let mut iteration = 0;
@@ -12,16 +15,15 @@ async fn main() {
     let mut last_update_time = get_time();
     let mut pressed_enter_key = false;
     let mut show_error_message = false;
-    // to clear the points
-    // click on delete
 
     loop {
         clear_background(BLACK);
-
+       // exiting the window if escaped !!
         if is_key_pressed(KeyCode::Escape) {
             std::process::exit(0);
         }
-
+        
+        // clearing the window if the delete is pressed !! 
         if is_key_pressed(KeyCode::Delete) {
             points = Vec::new();
             lines = Vec::new();
@@ -35,6 +37,7 @@ async fn main() {
             show_error_message = false;
         }
 
+        // for the error message display 
         if (is_key_pressed(KeyCode::Enter) && points.len() <= 1) || show_error_message {
             draw_text(
                 "please try to add more than one point!",
@@ -45,6 +48,7 @@ async fn main() {
             );
             show_error_message = true;
         }
+
         for Point(x, y) in &points {
             draw_circle_lines(*x, *y, 3.0, 1.0, WHITE);
         }
@@ -55,10 +59,11 @@ async fn main() {
             iteration = 0;
             last_update_time = get_time();
         }
-
-        if iteration < max_iterations && lines.len() > 2 {
+        
+        // we only start if the lines we have is => 2
+        if iteration < max_iterations && lines.len() >= 2 {
             let now = get_time();
-            if now - last_update_time > 1.0 {
+            if now - last_update_time > 2.0 {
                 let points_vec = chaikin_iteration(lines.clone());
                 lines = draw_lines_points(points_vec);
                 iteration += 1;
