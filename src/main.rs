@@ -8,7 +8,7 @@ async fn main() {
     let mut points = Vec::new();
     let mut lines = Vec::new();
     let mut iteration = 0;
-    let max_iterations = 50;
+    let max_iterations = 7;
     let mut last_update_time = get_time();
     let mut pressed_enter_key = false;
 
@@ -21,13 +21,12 @@ async fn main() {
                 draw_circle_lines(*x, *y, 3.0, 1.0, WHITE);
             }
         }
-        if is_key_pressed(KeyCode::Enter) && points.len()>0 {
+        if is_key_pressed(KeyCode::Enter) && points.len() > 0 {
             pressed_enter_key = true;
             lines = draw_lines_points(points.clone());
-            iteration = 0; 
+            iteration = 0;
             last_update_time = get_time();
         }
- 
 
         if iteration < max_iterations {
             let now = get_time();
@@ -35,9 +34,16 @@ async fn main() {
                 let points_vec = Chaikin_iteration(lines.clone());
                 lines = draw_lines_points(points_vec);
                 iteration += 1;
+                println!("{}", iteration);
                 last_update_time = now;
             }
-        }
+
+
+        } 
+        // else if iteration == max_iterations {
+        //     iteration = 0;
+        //     last_update_time = get_time();
+        // }
 
         for (p1, p2) in &lines {
             draw_line(p1.0, p1.1, p2.0, p2.1, 1.0, WHITE);
