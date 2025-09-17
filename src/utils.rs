@@ -32,6 +32,9 @@ pub fn Chaikin_iteration(points: Vec<(Point, Point)>) -> Vec<Point> {
     lines_iteration
 }
 
+
+
+// it does not work OMG we wan't do this this way
 pub fn create_animation(steps: usize, mut original_lines: Vec<(Point, Point)>) {
     let mut current_lines = original_lines;
     let mut current_points = Vec::new();
@@ -43,12 +46,8 @@ pub fn create_animation(steps: usize, mut original_lines: Vec<(Point, Point)>) {
         thread::sleep(Duration::from_millis(1000));
 
         current_points = Chaikin_iteration(current_lines.to_vec());
-        println!("current points {:?}", current_points);
+       
         current_lines = draw_lines_points(current_points);
-        for (p1, p2) in &current_lines {
-            println!("drawing");
-            draw_line(p1.0, p1.1, p2.0, p2.1, 1.0, WHITE);
-        }
         original_lines = current_lines.clone();
         i += 1;
     }
