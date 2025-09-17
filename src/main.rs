@@ -56,7 +56,7 @@ async fn main() {
             last_update_time = get_time();
         }
 
-        if iteration < max_iterations && lines.len() >= 2 {
+        if iteration < max_iterations && lines.len() > 2 {
             let now = get_time();
             if now - last_update_time > 1.0 {
                 let points_vec = chaikin_iteration(lines.clone());

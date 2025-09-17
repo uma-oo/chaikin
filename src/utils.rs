@@ -1,5 +1,5 @@
 use macroquad::prelude::*;
-use std::{ thread, time::Duration };
+
 // so we need to draw lines
 #[derive(Clone, Copy, Debug)]
 pub struct Point(pub f32, pub f32);
@@ -19,7 +19,6 @@ pub fn chaikin_iteration(points: Vec<(Point, Point)>) -> Vec<Point> {
     let mut lines_iteration = Vec::new();
 
     let (start, _) = points[0];
-    let (_, end) = points[points.len() - 1];
     lines_iteration.push(start);
     let mut i = 0;
     for (p1, p2) in &points {
